@@ -33,15 +33,18 @@ Select * from my_table;
 
 `mysql -u root -p dbdb < /backup/backup.sql`
 
-## for differential
+#### File size 544 kb
+
+## For differential. Done with timestamp
 
 `mysqldump -u root -p dbdb > backup/backup.sql`
+
 `mysqldump -u root -p --no-create-info dbdb --where="backup_timestamp > '2023-09-22 13:16:28'" > backup/differential_backup.sql`
 
-## for incremental only latest debian https://stackoverflow.com/questions/73288860/can-not-find-mysqlbinlog-command-in-docker
+#### Full - 544 kb
+#### Differential - 57 kb --> growth with time. The day before full backup could be the biggest size
 
-`mysqldump -u root -p dbdb > backup/backup.sql`
-`mysqldump -u root -p --no-create-info dbdb --where="backup_timestamp > '2023-09-22 13:16:28'" > backup/differential_backup.sql`
+## For incremental. I tried to do with logs strategy, but for complicated to do, because only latest debian works https://stackoverflow.com/questions/73288860/can-not-find-mysqlbinlog-command-in-docker 
 
 
 `mysqldump -u root -p dbdb > /backup/backup.sql`
@@ -51,3 +54,13 @@ Select * from my_table;
 
 `mysqldump -u root -p --no-create-info dbdb --where="backup_timestamp > '2023-09-23 14:43:02'" > backup/backup_incremental-date-****.sql`
 
+#### File size the same as for differential. But for everyday it will be almost the same
+
+
+
+### Continious data protection 
+Seems the same as for replication. All changes are written as bin format and stored in another server for saving data. The most flexible way to make a backup
+
+### Reverse Delta
+Implementation is simmilar to incremental. But it calculates the difference between the full backup and the changes that have been made.
+Used very rare
