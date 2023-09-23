@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  mysql-full:
+    image: mysql:latest
+    container_name: full
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: dbdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    ports:
+      - "4406:3306"
+    volumes:
+      - ./data-full:/var/lib/mysql
+      - ./backup/full:/backup
+
+  mysql-differential:
+    image: mysql:latest
+    container_name: differential
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: dbdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    ports:
+      - "5506:3306"
+    volumes:
+      - ./data-differential:/var/lib/mysql
+      - ./backup/differential:/backup
+
+  mysql-incremental:
+    image: mysql:8.0-debian
+    container_name: incremental
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: dbdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+
+    ports:
+      - "6606:3306"
+    volumes:
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./data-incremental:/var/lib/mysql
+      - ./backup/incremental:/backup
