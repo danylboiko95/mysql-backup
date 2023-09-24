@@ -63,4 +63,4 @@ Seems the same as for replication. All changes are written as bin format and sto
 
 ### Reverse Delta
 Implementation is simmilar to incremental. But it calculates the difference between the full backup and the changes that have been made.
-Used very rare
+Used very rare!
